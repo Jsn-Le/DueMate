@@ -1,5 +1,9 @@
 package com.duemate.duemate.model;
 
-public class BillStatus {
+public enum BillStatus {
 
+    PENDING,
+    PAID,
+    OVERDUE
+    
 }
