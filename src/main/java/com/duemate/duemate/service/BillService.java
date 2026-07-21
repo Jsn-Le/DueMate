@@ -39,13 +39,13 @@ public class BillService {
     }
     
     // GET - Get a bill by ID
-    public Bill getBillById(long id) {
+    public Bill getBillById(Long id) {
         return billRepository.findById(id)
                 .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
     }
 
     // UPDATE - Update a bill
-    public Bill updateBill(long id, String updatedName, BigDecimal updatedAmount, LocalDate updatedDueDate) {
+    public Bill updateBill(Long id, String updatedName, BigDecimal updatedAmount, LocalDate updatedDueDate) {
         Bill bill = getBillById(id);
         bill.setName(updatedName);
         bill.setAmount(updatedAmount);
@@ -54,7 +54,7 @@ public class BillService {
     }
 
     // UPDATE - Mark a bill as paid
-    public Bill markBillPaid(long id) {
+    public Bill markBillPaid(Long id) {
         Bill bill = getBillById(id);
         bill.setStatus(BillStatus.PAID);
         return billRepository.save(bill);
@@ -74,7 +74,7 @@ public class BillService {
     }
 
     // DELETE - Delete a bill
-    public void deleteBill(long id) {
+    public void deleteBill(Long id) {
         Bill bill = getBillById(id);
         billRepository.delete(bill);
     }

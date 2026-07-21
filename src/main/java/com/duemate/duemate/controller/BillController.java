@@ -37,26 +37,26 @@ public class BillController {
 
     //  GET - Get a bill by ID
     @GetMapping("/{id}")
-    public Bill getBillById(@PathVariable long id) {
+    public Bill getBillById(@PathVariable Long id) {
         return billService.getBillById(id);
     }
 
     // UPDATE - Update a bill
     @PutMapping("/{id}")
-    public Bill updateBill(@PathVariable long id, @RequestBody Bill bill) {
+    public Bill updateBill(@PathVariable Long id, @RequestBody Bill bill) {
         return billService.updateBill(id, bill.getName(), bill.getAmount(), bill.getDueDate());
     }
 
     // UPDATE - Mark a bill as paid
     @PutMapping("/{id}/paid")
-    public Bill markBillPaid(@PathVariable long id) {
+    public Bill markBillPaid(@PathVariable Long id) {
         return billService.markBillPaid(id);
     }
 
 
     // DELETE - Delete a bill
     @DeleteMapping("/{id}")
-    public void deleteBill(@PathVariable long id) {
+    public void deleteBill(@PathVariable Long id) {
         billService.deleteBill(id);
     }
 
