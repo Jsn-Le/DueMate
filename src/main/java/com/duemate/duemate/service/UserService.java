@@ -1,6 +1,5 @@
 package com.duemate.duemate.service;
 
-import java.util.Currency;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     // POST - Create a user
-    public User createUser(String email, String password, Currency defaultCurrency)  {
+    public User createUser(String email, String password, String defaultCurrency)  {
         if (isEmailTaken(email, null)) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
@@ -41,7 +40,7 @@ public class UserService {
     }
 
     // UPDATE - Update a user
-    public User updateUser(Long id, String email, String password, Currency defaultCurrency) {
+    public User updateUser(Long id, String email, String password, String defaultCurrency) {
         if (isEmailTaken(email, id)) {
             throw new DuplicateUserException("A user with this email already exists.");
         }

@@ -1,7 +1,5 @@
 package com.duemate.duemate.model;
 
-import java.util.Currency;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,9 +27,9 @@ public class User {
     private String email;
     
     private String password;
-    private Currency defaultCurrency;
+    private String defaultCurrency;
 
-    public User(String email, String password, Currency defaultCurrency) {
+    public User(String email, String password, String defaultCurrency) {
         this.email = email;
         this.password = password;
         this.defaultCurrency = defaultCurrency;
