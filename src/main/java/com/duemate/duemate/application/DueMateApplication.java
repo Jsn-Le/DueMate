@@ -1,4 +1,4 @@
-package com.duemate.duemate;
+package com.duemate.duemate.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

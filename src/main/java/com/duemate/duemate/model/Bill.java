@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,14 +33,15 @@ public class Bill {
     @Enumerated(EnumType.STRING)
     private BillStatus status;
 
-    // @ManyToOne
-    // private User user;
+    @ManyToOne
+    private User user;
 
-    public Bill(String name, BigDecimal amount, LocalDate dueDate, BillStatus status) {
+    public Bill(String name, BigDecimal amount, LocalDate dueDate, BillStatus status, User user) {
         this.name = name;
         this.amount = amount;
         this.dueDate = dueDate;
         this.status = status;
+        this.user = user;
     }
 
 }

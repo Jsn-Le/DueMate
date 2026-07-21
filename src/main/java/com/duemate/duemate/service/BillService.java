@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.duemate.duemate.exception.BillNotFoundException;
 import com.duemate.duemate.model.Bill;
 import com.duemate.duemate.model.BillStatus;
+import com.duemate.duemate.model.User;
 import com.duemate.duemate.repository.BillRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,14 +22,14 @@ public class BillService {
     private final BillRepository billRepository;
 
     // POST - Create a bill
-    public Bill createBill(String name, BigDecimal amount, LocalDate dueDate) {
+    public Bill createBill(String name, BigDecimal amount, LocalDate dueDate, User user) {
         BillStatus status = BillStatus.PENDING;
 
         if (dueDate.isBefore(LocalDate.now())) {
             status = BillStatus.OVERDUE;
         }
 
-        Bill bill = new Bill(name, amount, dueDate, status);
+        Bill bill = new Bill(name, amount, dueDate, status, user);
 
         return billRepository.save(bill);
     }
