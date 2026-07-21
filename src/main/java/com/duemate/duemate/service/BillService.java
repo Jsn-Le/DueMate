@@ -20,14 +20,17 @@ import lombok.RequiredArgsConstructor;
 public class BillService {
     
     private final BillRepository billRepository;
+    private final UserService userService;
 
     // POST - Create a bill
-    public Bill createBill(String name, BigDecimal amount, LocalDate dueDate, User user) {
+    public Bill createBill(String name, BigDecimal amount, LocalDate dueDate, Long userId) {
         BillStatus status = BillStatus.PENDING;
 
         if (dueDate.isBefore(LocalDate.now())) {
             status = BillStatus.OVERDUE;
         }
+
+        User user = userService.getUserById(userId);
 
         Bill bill = new Bill(name, amount, dueDate, status, user);
 

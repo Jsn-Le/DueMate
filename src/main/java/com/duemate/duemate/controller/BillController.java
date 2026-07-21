@@ -26,7 +26,7 @@ public class BillController {
     // POST - Create a bill
     @PostMapping
     public Bill createBill(@RequestBody Bill bill) {
-        return billService.createBill(bill.getName(), bill.getAmount(), bill.getDueDate(), bill.getUser());
+        return billService.createBill(bill.getName(), bill.getAmount(), bill.getDueDate(), bill.getUser().getId());
     }
 
     // GET - Get all bills
