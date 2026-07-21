@@ -43,7 +43,7 @@ public class UserController {
 
     // UPDATE - Update a user
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, User user) {
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userService.updateUser(id, user.getEmail(), user.getPassword(), user.getDefaultCurrency());
     }
 
