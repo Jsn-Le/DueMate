@@ -41,6 +41,12 @@ public class BillController {
         return billService.getBillById(id);
     }
 
+    // GET - Get all bills by User
+    @GetMapping("/user/{userId}")
+    public List<Bill> getBillsByUser(@PathVariable Long userId) {
+        return billService.getBillsByUser(userId);
+    }
+
     // UPDATE - Update a bill
     @PutMapping("/{id}")
     public Bill updateBill(@PathVariable Long id, @RequestBody Bill bill) {

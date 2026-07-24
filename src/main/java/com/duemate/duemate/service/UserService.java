@@ -1,7 +1,6 @@
 package com.duemate.duemate.service;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class UserService {
 
     // POST - Create a user
     public User createUser(String email, String password, String defaultCurrency)  {
-        if (isEmailTaken(email, null)) {
+        if (isEmailTaken(email)) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
 
@@ -41,11 +40,12 @@ public class UserService {
 
     // UPDATE - Update a user
     public User updateUser(Long id, String email, String password, String defaultCurrency) {
-        if (isEmailTaken(email, id)) {
+        User user = getUserById(id);
+        
+        if (isEmailTakenByAnotherUser(email, id)) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
 
-        User user = getUserById(id);
         user.setEmail(email);
         user.setPassword(password);
         user.setDefaultCurrency(defaultCurrency);
@@ -59,20 +59,12 @@ public class UserService {
     }
 
     // Check for duplicate email
-    private boolean isEmailTaken(String email, Long id) {
-        List<User> users = getAllUsers();
+    private boolean isEmailTaken(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
-        for (User user : users) {
-            String userEmail = user.getEmail();
-            long userId = user.getId();
-            if (Objects.equals(userEmail, email)) {
-                if (userId != id) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    private boolean isEmailTakenByAnotherUser(String email, Long id) {
+        return userRepository.existsByEmailAndIdNot(email, id);
     }
 
 }

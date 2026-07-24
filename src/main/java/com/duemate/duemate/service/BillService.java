@@ -24,17 +24,15 @@ public class BillService {
 
     // POST - Create a bill
     public Bill createBill(String name, BigDecimal amount, LocalDate dueDate, Long userId) {
-        BillStatus status = BillStatus.PENDING;
+            User user = userService.getUserById(userId);
 
-        if (dueDate.isBefore(LocalDate.now())) {
-            status = BillStatus.OVERDUE;
-        }
+            BillStatus status = BillStatus.PENDING;
+            if (dueDate.isBefore(LocalDate.now())) {
+                status = BillStatus.OVERDUE;
+            }
 
-        User user = userService.getUserById(userId);
-
-        Bill bill = new Bill(name, amount, dueDate, status, user);
-
-        return billRepository.save(bill);
+            Bill bill = new Bill(name, amount, dueDate, status, user);
+            return billRepository.save(bill);
     }
 
     // GET - Get all bills
@@ -46,6 +44,12 @@ public class BillService {
     public Bill getBillById(Long id) {
         return billRepository.findById(id)
                 .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
+    }
+
+    // GET - Get all bills by User
+    public List<Bill> getBillsByUser(Long userId) {
+        User user = userService.getUserById(userId);
+        return billRepository.getBillsByUser(user);
     }
 
     // UPDATE - Update a bill

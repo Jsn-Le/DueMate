@@ -6,4 +6,8 @@ import com.duemate.duemate.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    public boolean existsByEmail(String email);
+
+    public boolean existsByEmailAndIdNot(String email, Long id);
+
 }
