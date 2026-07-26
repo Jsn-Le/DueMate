@@ -1,13 +1,16 @@
 package com.duemate.duemate.service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.duemate.duemate.dto.BillResponse;
+import com.duemate.duemate.dto.CreateBillRequest;
+import com.duemate.duemate.dto.UpdateBillRequest;
 import com.duemate.duemate.exception.BillNotFoundException;
+import com.duemate.duemate.mapper.BillMapper;
 import com.duemate.duemate.model.Bill;
 import com.duemate.duemate.model.BillStatus;
 import com.duemate.duemate.model.User;
@@ -19,53 +22,64 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BillService {
     
+    private final BillMapper billMapper;
     private final BillRepository billRepository;
     private final UserService userService;
 
     // POST - Create a bill
-    public Bill createBill(String name, BigDecimal amount, LocalDate dueDate, Long userId) {
-            User user = userService.getUserById(userId);
+    public BillResponse createBill(CreateBillRequest request) {
+            User user = userService.getUserById(request.getUser().getId());
 
             BillStatus status = BillStatus.PENDING;
+            LocalDate dueDate = request.getDueDate();
             if (dueDate.isBefore(LocalDate.now())) {
                 status = BillStatus.OVERDUE;
             }
 
-            Bill bill = new Bill(name, amount, dueDate, status, user);
-            return billRepository.save(bill);
+            Bill bill = billMapper.convertRequestToBill(request);
+            bill.setUser(user);
+            bill.setStatus(status);
+            billRepository.save(bill);
+
+            return billMapper.convertBillToResponse(bill);
     }
 
     // GET - Get all bills
-    public List<Bill> getAllBills() {
-        return billRepository.findAll();
+    public List<BillResponse> getAllBills() {
+        List<Bill> bills = billRepository.findAll();
+        return billMapper.convertBillListToResponse(bills);
     }
     
     // GET - Get a bill by ID
-    public Bill getBillById(Long id) {
-        return billRepository.findById(id)
-                .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
+    public BillResponse getBillById(Long id) {
+        Bill bill = billRepository.findById(id)
+                    .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
+        return billMapper.convertBillToResponse(bill);
     }
 
     // GET - Get all bills by User
-    public List<Bill> getBillsByUser(Long userId) {
+    public List<BillResponse> getBillsByUser(Long userId) {
         User user = userService.getUserById(userId);
-        return billRepository.getBillsByUser(user);
+        List<Bill> bills = billRepository.getBillsByUser(user);
+        return billMapper.convertBillListToResponse(bills);
     }
 
     // UPDATE - Update a bill
-    public Bill updateBill(Long id, String updatedName, BigDecimal updatedAmount, LocalDate updatedDueDate) {
-        Bill bill = getBillById(id);
-        bill.setName(updatedName);
-        bill.setAmount(updatedAmount);
-        bill.setDueDate(updatedDueDate);
-        return billRepository.save(bill);
+    public BillResponse updateBill(Long id, UpdateBillRequest request) {
+        Bill bill = getBillEntityById(id);
+        bill.setName(request.getName());
+        bill.setAmount(request.getAmount());
+        bill.setDueDate(request.getDueDate());
+        Bill updatedBill = billRepository.save(bill);
+        return billMapper.convertBillToResponse(updatedBill);
     }
 
     // UPDATE - Mark a bill as paid
-    public Bill markBillPaid(Long id) {
-        Bill bill = getBillById(id);
+    public BillResponse markBillPaid(Long id) {
+        Bill bill = getBillEntityById(id);
         bill.setStatus(BillStatus.PAID);
-        return billRepository.save(bill);
+        Bill updatedBill = billRepository.save(bill);
+        return billMapper.convertBillToResponse(updatedBill);
     }
 
     // UPDATE - Mark bills as overdue (Scheduled Task)
@@ -82,9 +96,17 @@ public class BillService {
     }
 
     // DELETE - Delete a bill
-    public void deleteBill(Long id) {
-        Bill bill = getBillById(id);
+    public String deleteBill(Long id) {
+        Bill bill = getBillEntityById(id);
         billRepository.delete(bill);
+        return "Successfully deleted";
+    }
+
+    // Fetch Bill Entity (Private Helper Method)
+    private Bill getBillEntityById(Long id) {
+        Bill bill = billRepository.findById(id)
+                    .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
+        return bill;
     }
 
 }

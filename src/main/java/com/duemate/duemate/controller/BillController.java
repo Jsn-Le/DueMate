@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.duemate.duemate.model.Bill;
+import com.duemate.duemate.dto.BillResponse;
+import com.duemate.duemate.dto.CreateBillRequest;
+import com.duemate.duemate.dto.UpdateBillRequest;
 import com.duemate.duemate.service.BillService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,45 +27,44 @@ public class BillController {
 
     // POST - Create a bill
     @PostMapping
-    public Bill createBill(@RequestBody Bill bill) {
-        return billService.createBill(bill.getName(), bill.getAmount(), bill.getDueDate(), bill.getUser().getId());
+    public BillResponse createBill(@RequestBody CreateBillRequest request) {
+        return billService.createBill(request);
     }
 
     // GET - Get all bills
     @GetMapping
-    public List<Bill> getAllBills() {
+    public List<BillResponse> getAllBills() {
         return billService.getAllBills();
     }
 
     //  GET - Get a bill by ID
     @GetMapping("/{id}")
-    public Bill getBillById(@PathVariable Long id) {
+    public BillResponse getBillById(@PathVariable Long id) {
         return billService.getBillById(id);
     }
 
     // GET - Get all bills by User
     @GetMapping("/user/{userId}")
-    public List<Bill> getBillsByUser(@PathVariable Long userId) {
+    public List<BillResponse> getBillsByUser(@PathVariable Long userId) {
         return billService.getBillsByUser(userId);
     }
 
     // UPDATE - Update a bill
     @PutMapping("/{id}")
-    public Bill updateBill(@PathVariable Long id, @RequestBody Bill bill) {
-        return billService.updateBill(id, bill.getName(), bill.getAmount(), bill.getDueDate());
+    public BillResponse updateBill(@PathVariable Long id, @RequestBody UpdateBillRequest request) {
+        return billService.updateBill(id, request);
     }
 
     // UPDATE - Mark a bill as paid
     @PutMapping("/{id}/paid")
-    public Bill markBillPaid(@PathVariable Long id) {
+    public BillResponse markBillPaid(@PathVariable Long id) {
         return billService.markBillPaid(id);
     }
 
-
     // DELETE - Delete a bill
     @DeleteMapping("/{id}")
-    public void deleteBill(@PathVariable Long id) {
-        billService.deleteBill(id);
+    public String deleteBill(@PathVariable Long id) {
+        return billService.deleteBill(id);
     }
 
 }
