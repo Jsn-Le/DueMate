@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.duemate.duemate.dto.UserRequest;
+import com.duemate.duemate.dto.UserResponse;
 import com.duemate.duemate.exception.DuplicateUserException;
 import com.duemate.duemate.exception.UserNotFoundException;
+import com.duemate.duemate.mapper.UserMapper;
 import com.duemate.duemate.model.User;
 import com.duemate.duemate.repository.UserRepository;
 
@@ -15,47 +18,55 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserService {
 
+    private final UserMapper userMapper;
     private final UserRepository userRepository;
 
     // POST - Create a user
-    public User createUser(String email, String password, String defaultCurrency)  {
-        if (isEmailTaken(email)) {
+    public UserResponse createUser(UserRequest request)  {
+        if (isEmailTaken(request.getEmail())) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
 
-        User user = new User(email, password, defaultCurrency);
-        return userRepository.save(user);
+        User user = userMapper.convertRequestToUser(request);
+        userRepository.save(user);
+
+        return userMapper.convertUserTResponse(user);
     }
 
     // GET - Get all users
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return userMapper.convertUserListTResponse(users);
     }
 
     // GET - Get a user by ID
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found."));
+        return userMapper.convertUserTResponse(user);
     }
 
     // UPDATE - Update a user
-    public User updateUser(Long id, String email, String password, String defaultCurrency) {
-        User user = getUserById(id);
+    public UserResponse updateUser(UserRequest request, Long id) {
+        User user = getUserEntityById(id);
         
-        if (isEmailTakenByAnotherUser(email, id)) {
+        if (isEmailTakenByAnotherUser(request, id)) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
 
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setDefaultCurrency(defaultCurrency);
-        return userRepository.save(user);
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setDefaultCurrency(request.getDefaultCurrency());
+        userRepository.save(user);
+
+        return userMapper.convertUserTResponse(user);
     }
 
     // DELETE - Delete a user
-    public void deleteUser(Long id) {
-        User user = getUserById(id);
+    public String deleteUser(Long id) {
+        User user = getUserEntityById(id);
         userRepository.delete(user);
+        return "Successfully deleted";
     }
 
     // Check for duplicate email
@@ -63,8 +74,15 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    private boolean isEmailTakenByAnotherUser(String email, Long id) {
-        return userRepository.existsByEmailAndIdNot(email, id);
+    private boolean isEmailTakenByAnotherUser(UserRequest request, Long id) {
+        return userRepository.existsByEmailAndIdNot(request.getEmail(), id);
+    }
+
+    // Fetch User Entity (Private Helper Method)
+    protected User getUserEntityById(Long id) {
+        User user = userRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found."));
+        return user;
     }
 
 }

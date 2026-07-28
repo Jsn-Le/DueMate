@@ -28,7 +28,7 @@ public class BillService {
 
     // POST - Create a bill
     public BillResponse createBill(CreateBillRequest request) {
-            User user = userService.getUserById(request.getUser().getId());
+            User user = userService.getUserEntityById(request.getUser().getId());
 
             BillStatus status = BillStatus.PENDING;
             LocalDate dueDate = request.getDueDate();
@@ -59,13 +59,13 @@ public class BillService {
 
     // GET - Get all bills by User
     public List<BillResponse> getBillsByUser(Long userId) {
-        User user = userService.getUserById(userId);
+        User user = userService.getUserEntityById(userId);
         List<Bill> bills = billRepository.getBillsByUser(user);
         return billMapper.convertBillListToResponse(bills);
     }
 
     // UPDATE - Update a bill
-    public BillResponse updateBill(Long id, UpdateBillRequest request) {
+    public BillResponse updateBill(UpdateBillRequest request, Long id) {
         Bill bill = getBillEntityById(id);
         bill.setName(request.getName());
         bill.setAmount(request.getAmount());

@@ -51,8 +51,8 @@ public class BillController {
 
     // UPDATE - Update a bill
     @PutMapping("/{id}")
-    public BillResponse updateBill(@PathVariable Long id, @RequestBody UpdateBillRequest request) {
-        return billService.updateBill(id, request);
+    public BillResponse updateBill(@RequestBody UpdateBillRequest request, @PathVariable Long id) {
+        return billService.updateBill(request, id);
     }
 
     // UPDATE - Mark a bill as paid

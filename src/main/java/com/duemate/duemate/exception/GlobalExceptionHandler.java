@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> userNotFoundResponse(UserNotFoundException exception) {
         String message = exception.getMessage();
         ErrorResponse errorResponse = new ErrorResponse(404, message, USER_NOT_FOUND);
-        ResponseEntity<ErrorResponse> response = new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.NOT_FOUND);
+        ResponseEntity<ErrorResponse> response = new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         return response;
     }
 
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> billNotFoundResponse(BillNotFoundException exception) {
         String message = exception.getMessage();
         ErrorResponse errorResponse = new ErrorResponse(404, message, BILL_NOT_FOUND);
-        ResponseEntity<ErrorResponse> response = new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.NOT_FOUND);
+        ResponseEntity<ErrorResponse> response = new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         return response;
     }
 
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> duplicateUserResponse(DuplicateUserException exception) {
         String message = exception.getMessage();
         ErrorResponse errorResponse = new ErrorResponse(409, message, USER_ALREADY_EXISTS);
-        ResponseEntity<ErrorResponse> response = new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.CONFLICT);
+        ResponseEntity<ErrorResponse> response = new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
         return response;
     }
 

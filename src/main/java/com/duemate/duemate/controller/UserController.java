@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.duemate.duemate.model.User;
+import com.duemate.duemate.dto.UserRequest;
+import com.duemate.duemate.dto.UserResponse;
 import com.duemate.duemate.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,32 +26,32 @@ public class UserController {
 
     // POST - Create a user
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user.getEmail(), user.getPassword(), user.getDefaultCurrency());
+    public UserResponse createUser(@RequestBody UserRequest request) {
+        return userService.createUser(request);
     }
 
     // GET - Get all users
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
     }
 
     // GET - Get a user by ID
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public UserResponse getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     // UPDATE - Update a user
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user.getEmail(), user.getPassword(), user.getDefaultCurrency());
+    public UserResponse updateUser(@RequestBody UserRequest request, @PathVariable Long id) {
+        return userService.updateUser(request, id);
     }
 
-    @DeleteMapping("/{id}")
     // DELETE - Delete a user
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        return userService.deleteUser(id);
     }
 
 }

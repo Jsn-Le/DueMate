@@ -3,10 +3,13 @@ package com.duemate.duemate.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.duemate.duemate.dto.BillResponse;
 import com.duemate.duemate.dto.CreateBillRequest;
 import com.duemate.duemate.model.Bill;
 
+@Component
 public class BillMapper {
 
     public Bill convertRequestToBill(CreateBillRequest request) {
