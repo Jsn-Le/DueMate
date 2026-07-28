@@ -16,7 +16,7 @@ public class UserMapper {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
-        user.setDefaultCurrency(request.getCurrency());
+        user.setDefaultCurrency(request.getDefaultCurrency());
 
         return user;
     }
