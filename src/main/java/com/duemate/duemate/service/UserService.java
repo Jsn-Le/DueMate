@@ -2,6 +2,7 @@ package com.duemate.duemate.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.duemate.duemate.dto.UserRequest;
@@ -20,6 +21,7 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // POST - Create a user
     public UserResponse createUser(UserRequest request)  {
@@ -28,6 +30,7 @@ public class UserService {
         }
 
         User user = userMapper.convertRequestToUser(request);
+        user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userRepository.save(user);
 
         return userMapper.convertUserTResponse(user);
@@ -55,7 +58,7 @@ public class UserService {
         }
 
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setDefaultCurrency(request.getDefaultCurrency());
         userRepository.save(user);
 
