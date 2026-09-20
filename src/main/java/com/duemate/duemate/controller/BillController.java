@@ -37,7 +37,7 @@ public class BillController {
         return billService.getAllBills();
     }
 
-    //  GET - Get a bill by ID
+    // GET - Get a bill by ID
     @GetMapping("/{id}")
     public BillResponse getBillById(@PathVariable Long id) {
         return billService.getBillById(id);

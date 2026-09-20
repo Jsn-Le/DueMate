@@ -24,7 +24,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // POST - Create a user
-    public UserResponse createUser(UserRequest request)  {
+    public UserResponse createUser(UserRequest request) {
         if (isEmailTaken(request.getEmail())) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
@@ -52,7 +52,7 @@ public class UserService {
     // UPDATE - Update a user
     public UserResponse updateUser(UserRequest request, Long id) {
         User user = getUserEntityById(id);
-        
+
         if (isEmailTakenByAnotherUser(request, id)) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
@@ -84,7 +84,7 @@ public class UserService {
     // Fetch User Entity (Private Helper Method)
     protected User getUserEntityById(Long id) {
         User user = userRepository.findById(id)
-                    .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found."));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found."));
         return user;
     }
 

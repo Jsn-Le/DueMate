@@ -21,27 +21,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class BillService {
-    
+
     private final BillMapper billMapper;
     private final BillRepository billRepository;
     private final UserService userService;
 
     // POST - Create a bill
     public BillResponse createBill(CreateBillRequest request) {
-            User user = userService.getUserEntityById(request.getUser().getId());
+        User user = userService.getUserEntityById(request.getUser().getId());
 
-            BillStatus status = BillStatus.PENDING;
-            LocalDate dueDate = request.getDueDate();
-            if (dueDate.isBefore(LocalDate.now())) {
-                status = BillStatus.OVERDUE;
-            }
+        BillStatus status = BillStatus.PENDING;
+        LocalDate dueDate = request.getDueDate();
+        if (dueDate.isBefore(LocalDate.now())) {
+            status = BillStatus.OVERDUE;
+        }
 
-            Bill bill = billMapper.convertRequestToBill(request);
-            bill.setUser(user);
-            bill.setStatus(status);
-            billRepository.save(bill);
+        Bill bill = billMapper.convertRequestToBill(request);
+        bill.setUser(user);
+        bill.setStatus(status);
+        billRepository.save(bill);
 
-            return billMapper.convertBillToResponse(bill);
+        return billMapper.convertBillToResponse(bill);
     }
 
     // GET - Get all bills
@@ -49,11 +49,11 @@ public class BillService {
         List<Bill> bills = billRepository.findAll();
         return billMapper.convertBillListToResponse(bills);
     }
-    
+
     // GET - Get a bill by ID
     public BillResponse getBillById(Long id) {
         Bill bill = billRepository.findById(id)
-                    .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
+                .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
         return billMapper.convertBillToResponse(bill);
     }
 
@@ -105,7 +105,7 @@ public class BillService {
     // Fetch Bill Entity (Private Helper Method)
     private Bill getBillEntityById(Long id) {
         Bill bill = billRepository.findById(id)
-                    .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
+                .orElseThrow(() -> new BillNotFoundException("Bill with id " + id + " not found."));
         return bill;
     }
 

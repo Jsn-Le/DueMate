@@ -5,5 +5,5 @@ public enum BillStatus {
     PENDING,
     PAID,
     OVERDUE
-    
+
 }
