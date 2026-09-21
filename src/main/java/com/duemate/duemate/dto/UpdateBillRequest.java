@@ -14,6 +14,6 @@ public class UpdateBillRequest {
 
     private String name;
     private BigDecimal amount;
-    private LocalDate dueDate; 
+    private LocalDate dueDate;
 
 }
