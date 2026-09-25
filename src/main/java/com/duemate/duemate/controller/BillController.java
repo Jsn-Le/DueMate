@@ -31,12 +31,6 @@ public class BillController {
         return billService.createBill(request);
     }
 
-    // GET - Get all bills
-    @GetMapping
-    public List<BillResponse> getAllBills() {
-        return billService.getAllBills();
-    }
-
     // GET - Get a bill by ID
     @GetMapping("/{id}")
     public BillResponse getBillById(@PathVariable Long id) {
@@ -44,9 +38,9 @@ public class BillController {
     }
 
     // GET - Get all bills by User
-    @GetMapping("/user/{userId}")
-    public List<BillResponse> getBillsByUser(@PathVariable Long userId) {
-        return billService.getBillsByUser(userId);
+    @GetMapping
+    public List<BillResponse> getBillsByUser() {
+        return billService.getBillsByUser();
     }
 
     // UPDATE - Update a bill
