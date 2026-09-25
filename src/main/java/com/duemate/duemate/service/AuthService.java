@@ -1,12 +1,14 @@
 package com.duemate.duemate.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.duemate.duemate.dto.LoginRequest;
+import com.duemate.duemate.exception.InvalidCredentialsException;
 import com.duemate.duemate.security.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,16 +21,19 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public String authenticateAndCreateToken(LoginRequest loginRequest) {
+        try {
+            String userEmail = loginRequest.getEmail();
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail,
+                    loginRequest.getPassword(), null);
 
-        String userEmail = loginRequest.getEmail();
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail,
-                loginRequest.getPassword(), null);
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            String jwt = jwtService.createJWT((UserDetails) authentication.getPrincipal());
 
-        String jwt = jwtService.createJWT((UserDetails) authentication.getPrincipal());
-
-        return jwt;
+            return jwt;
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException("Invalid email or password");
+        }
     }
 
 }

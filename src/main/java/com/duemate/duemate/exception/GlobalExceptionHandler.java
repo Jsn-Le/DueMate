@@ -11,6 +11,7 @@ public class GlobalExceptionHandler {
     private static final String USER_NOT_FOUND = "USER_NOT_FOUND";
     private static final String BILL_NOT_FOUND = "BILL_NOT_FOUND";
     private static final String USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
+    private static final String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> userNotFoundResponse(UserNotFoundException exception) {
@@ -33,6 +34,14 @@ public class GlobalExceptionHandler {
         String message = exception.getMessage();
         ErrorResponse errorResponse = new ErrorResponse(409, message, USER_ALREADY_EXISTS);
         ResponseEntity<ErrorResponse> response = new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+        return response;
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> invalidCredentialsResponse(InvalidCredentialsException exception) {
+        String message = exception.getMessage();
+        ErrorResponse errorResponse = new ErrorResponse(401, message, INVALID_CREDENTIALS);
+        ResponseEntity<ErrorResponse> response = new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         return response;
     }
 
