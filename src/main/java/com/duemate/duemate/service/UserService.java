@@ -1,13 +1,12 @@
 package com.duemate.duemate.service;
 
-import java.util.List;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.duemate.duemate.dto.UserRequest;
 import com.duemate.duemate.dto.UserResponse;
 import com.duemate.duemate.exception.DuplicateUserException;
+import com.duemate.duemate.exception.ForbiddenException;
 import com.duemate.duemate.exception.UserNotFoundException;
 import com.duemate.duemate.mapper.UserMapper;
 import com.duemate.duemate.model.User;
@@ -22,6 +21,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CurrentUserService currentUserService;
 
     // POST - Create a user
     public UserResponse createUser(UserRequest request) {
@@ -36,23 +36,23 @@ public class UserService {
         return userMapper.convertUserTResponse(user);
     }
 
-    // GET - Get all users
-    public List<UserResponse> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return userMapper.convertUserListTResponse(users);
-    }
-
     // GET - Get a user by ID
     public UserResponse getUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found."));
+        User currentUser = currentUserService.getCurrentUser();
+        User user = getUserEntityById(id);
+        if (!currentUser.getEmail().equals(user.getEmail())) {
+            throw new ForbiddenException("You do not have permission to access this resource");
+        }
         return userMapper.convertUserTResponse(user);
     }
 
     // UPDATE - Update a user
     public UserResponse updateUser(UserRequest request, Long id) {
+        User currentUser = currentUserService.getCurrentUser();
         User user = getUserEntityById(id);
-
+        if (!currentUser.getEmail().equals(user.getEmail())) {
+            throw new ForbiddenException("You do not have permission to access this resource");
+        }
         if (isEmailTakenByAnotherUser(request, id)) {
             throw new DuplicateUserException("A user with this email already exists.");
         }
@@ -67,7 +67,11 @@ public class UserService {
 
     // DELETE - Delete a user
     public String deleteUser(Long id) {
+        User currentUser = currentUserService.getCurrentUser();
         User user = getUserEntityById(id);
+        if (!currentUser.getEmail().equals(user.getEmail())) {
+            throw new ForbiddenException("You do not have permission to access this resource");
+        }
         userRepository.delete(user);
         return "Successfully deleted";
     }
