@@ -30,6 +30,12 @@ public class UserController {
         return userService.createUser(request);
     }
 
+    // GET - Get all users
+    @GetMapping 
+    public List<UserResponse> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
     // GET - Get a user by ID
     @GetMapping("/{id}")
     public UserResponse getUserById(@PathVariable Long id) {

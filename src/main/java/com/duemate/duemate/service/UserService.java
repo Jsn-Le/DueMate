@@ -1,5 +1,7 @@
 package com.duemate.duemate.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,12 @@ public class UserService {
         userRepository.save(user);
 
         return userMapper.convertUserTResponse(user);
+    }
+
+    // GET - Get all users
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return userMapper.convertUserListTResponse(users);
     }
 
     // GET - Get a user by ID
