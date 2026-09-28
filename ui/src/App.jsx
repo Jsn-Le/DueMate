@@ -17,8 +17,8 @@ function App() {
                 </div>
 
                 <div className="account-links">
-                    <h5>Forgot Password?</h5>
-                    <h5>Don't have an account? Register</h5>
+                    <h5 className="forgotPass">Forgot Password?</h5>
+                    <h5>Don't have an account? <span className="register">Register</span></h5>
                 </div>
             </div>
 

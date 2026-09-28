@@ -3,7 +3,7 @@ body {
 }
 
 main {
-    background-color: black;
+    background-color: #0b1426;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -11,7 +11,8 @@ main {
     align-items: center;
     background-image:
         linear-gradient(rgba(11, 20, 38, 0.6), rgba(11, 20, 30, 0.6)),
-        url('./assets/duematefavicon.png');
+        url('./assets/duematelogonobg.png'),
+        url('./assets/fallingspeckles.gif');
     background-size: cover;
     background-position: center;
 
@@ -66,6 +67,15 @@ main {
     color: lightgray;
 }
 
+.login-form input:hover {
+    border-bottom: 1px solid #e69138;
+}
+
+.login-form input:focus {
+    border-bottom: 1px solid #e69138;
+    outline: none;
+}
+
 .login-form button {
     margin-top: 10px;
     color: white;
@@ -78,8 +88,38 @@ main {
     border-radius: 10px;
 }
 
+.login-form button:hover {
+    background-color: #e69138;
+    cursor: pointer;
+}
+
+.login-form button:active {
+    transform: scale(0.98);
+    background-color: #b45f06;
+}
+
 .account-links h5 {
     text-align: center;
     color: #b7b7b7;
     font-size: 12px;
+}
+
+.forgotPass:hover {
+    color: #e69138;
+    cursor: pointer;
+}
+
+.forgotPass:active {
+    transform: scale(0.98);
+    color: #b45f06;
+}
+
+.register:hover {
+    color: #e69138;
+    cursor: pointer;
+}
+
+.register:active {
+    transform: scale(0.98);
+    color: #b45f06;
 }
