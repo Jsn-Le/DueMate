@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+}
+
+main {
+    background-color: black;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image:
+        linear-gradient(rgba(11, 20, 38, 0.6), rgba(11, 20, 30, 0.6)),
+        url('./assets/duematefavicon.png');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.login-container {
+    background-color: #0b1426;
+    padding: 1%;
+    border-radius: 50px;
+    height: 400px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.branding h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #e69138;
+    font-size: 36px;
+}
+
+.branding h4 {
+    text-align: center;
+    color: #b7b7b7;
+    margin: 0;
+    font-size: 14px;
+}
+
+.login-form {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-form input {
+    background-color: transparent;
+    width: 300px;
+    height: 32px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid darkgray;
+    font-family: 'Inter', sans-serif;
+    color: lightgray;
+}
+
+.login-form input::placeholder {
+    color: lightgray;
+}
+
+.login-form button {
+    margin-top: 10px;
+    color: white;
+    background-color: #b45f06;
+    height: 32px;
+    border: 1px solid darkgray;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
+
+.account-links h5 {
+    text-align: center;
+    color: #b7b7b7;
+    font-size: 12px;
+}
