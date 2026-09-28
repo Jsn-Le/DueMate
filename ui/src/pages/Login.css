@@ -11,8 +11,8 @@ main {
     align-items: center;
     background-image:
         linear-gradient(rgba(11, 20, 38, 0.6), rgba(11, 20, 30, 0.6)),
-        url('./assets/duematelogonobg.png'),
-        url('./assets/fallingspeckles.gif');
+        url('../assets/duematelogonobg.png'),
+        url('../assets/fallingspeckles.gif');
     background-size: cover;
     background-position: center;
 }

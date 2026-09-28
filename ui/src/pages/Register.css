@@ -11,8 +11,8 @@ main {
     align-items: center;
     background-image:
         linear-gradient(rgba(11, 20, 38, 0.6), rgba(11, 20, 30, 0.6)),
-        url('./assets/duematelogonobg.png'),
-        url('./assets/fallingspeckles.gif');
+        url('../assets/duematelogonobg.png'),
+        url('../assets/fallingspeckles.gif');
     background-size: cover;
     background-position: center;
 }
@@ -103,26 +103,12 @@ main {
     font-size: 12px;
 }
 
-.forgotPass {
-    margin-bottom: 35px;
-}
-
-.forgotPass:hover {
+.login:hover {
     color: #e69138;
     cursor: pointer;
 }
 
-.forgotPass:active {
-    transform: scale(0.98);
-    color: #b45f06;
-}
-
-.register:hover {
-    color: #e69138;
-    cursor: pointer;
-}
-
-.register:active {
+.login:active {
     transform: scale(0.98);
     color: #b45f06;
 }
